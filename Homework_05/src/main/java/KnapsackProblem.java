@@ -1,53 +1,48 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class KnapsackProblem {
 
-    private int knapsackWeigth;
+    private int knapsackWeigth; // вес рюкзака
+    private int n; // количество предметов в рюкзаке
 
-    private ArrayList<Item> combinations = new ArrayList<>();
-    private ArrayList<Item> allCombinations = new ArrayList<>();
 
-    public KnapsackProblem(int knapsackWeigth) {
+    private ArrayList<Item> totake;
+
+    public KnapsackProblem(int knapsackWeigth, ArrayList<Item> totake) { // конструктор с весом рюкзака
         this.knapsackWeigth = knapsackWeigth;
+        this.totake = totake;
     }
 
-    public int maxCostInKnapsack(ArrayList<Item> totake) {
-
-        if (totake.isEmpty()) {
-            return 0;
-        }
-
-        totake = usefullThings(totake); // удаляем все лишнее
+    public int maxCostInKnapsack() {
 
 
-        for (Item item:totake) {
+        totake = usefullThings(totake); // удаляем все лишнее, получаем новый массив
+        n = totake.size(); //получаем количество предметов в рюкзаке
 
-            combinations.add(item);
-        }
-
-
-        if (isPossibilityToPut(totake)) {
-
-        }
-
-
-        return 0;
+        return bestCombination(n-1, knapsackWeigth);
     }
 
 
-    private ArrayList<Item> usefullThings(ArrayList<Item> totake) {
-        // проверяем, какие вещи нам подходят, все ненужное удаляем
+    private ArrayList<Item> usefullThings(ArrayList<Item> totake) {// проверяем, какие вещи нам подходят, все ненужное удаляем
+
         totake.removeIf(item -> !(item.getWeigth() <= knapsackWeigth && item.getWeigth() > 0 && item.getCost() > 0));
         return totake;
     }
 
 
-    private createVariants (ArrayList <Item> totake){
-        for (int i = 0; i<totake.size(); i++){
-           new ArrayList<Item>().add(totake.get(i));
+private int bestCombination (int n,int knapsackWeigth) { //подаем на вход количество предметов
+        if(n<0){ // если предметы закончились
+            return 0;
         }
-        return createVariants ()
-    }
+        if(totake.get(n).getWeigth()>knapsackWeigth){
+            return bestCombination(n-1, knapsackWeigth);
+        }
 
+        else {
+            return Math.max(bestCombination(n-1, knapsackWeigth), bestCombination(n-1, knapsackWeigth-totake.get(n).getWeigth())+totake.get(n).getCost());
+        }
+}
 
 }
