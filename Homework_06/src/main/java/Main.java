@@ -3,6 +3,10 @@
 // Данные, которыми необходимо заполнить узлы деревьев, представляются в виде чисел типа int.
 // Число, которое попадает в узел, должно генерироваться случайным образом в диапазоне от -100 до 100.
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.TreeMap;
+
 public class Main {
     public static void main(String[] args) {
         MyTreeMap<Integer, String> map = new MyTreeMap<>();
@@ -38,5 +42,27 @@ public class Main {
         //System.out.println(map.height());
         System.out.println(map.isBalanced());
         System.out.println(map.height());
+
+        int balanced_counter = 0;
+        ArrayList<MyTreeMap> arr = new ArrayList<>();
+
+        for (int i = 0; i < 200000; i++) {
+            arr.add(i, new MyTreeMap<>());
+            while (arr.get(i).height() <= 6) {
+                arr.get(i).put(rnd(-100, 100), i);
+            }
+            if(arr.get(i).isBalanced()){
+                balanced_counter++;
+            }
+
+        }
+        System.out.println (arr);
+        System.out.println((double)balanced_counter/200000);
+
+    }
+
+    public static int rnd(int min, int max) {
+        int diapason = max + Math.abs(min) + 1;
+        return (int) (Math.random() * diapason) - max;
     }
 }
