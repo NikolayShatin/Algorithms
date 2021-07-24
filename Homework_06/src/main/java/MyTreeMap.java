@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class MyTreeMap<K extends Comparable<K>, V> {
@@ -44,34 +45,39 @@ public class MyTreeMap<K extends Comparable<K>, V> {
 
 
     public boolean isBalanced() {
-        if(height()==0){
+        if (height() == 0) {
             return true;
         }
         return isBalanced(root);
     }
 
 
-    private boolean isBalanced (Node node){
-        if (node.left != null){
+    private boolean isBalanced(Node node) { // проверка на сбалансированность дерева
+        if (node.left != null && node.right != null) {
+            if (Math.abs(node.left.height - node.right.height) > 1) {
 
+                return false;
+            }
         }
+        if (node.left == null && node.right != null) {
+            if (node.right.height > 1) {
 
-        if (node.height - node.left.height + node.right.height <=1) {
+                return false;
+            }
+        }
+        if (node.left != null && node.right == null) {
+            if (node.left.height > 1) {
+
+                return false;
+            }
+        }
+        if (node.left == null && node.right == null) {
+
             return true;
         }
-        int cmp = key.compareTo(node.key);
-        if (cmp == 0) {
-            return node.value;
-        } else if (cmp < 0) {
-            return get(node.left, key);
-        } else {
-            return get(node.right, key);
-        }
 
-
-        return isBalanced()
+        return true;
     }
-
 
 
     public boolean isEmpty() {
@@ -133,10 +139,9 @@ public class MyTreeMap<K extends Comparable<K>, V> {
             node.right = put(node.right, key, value);
         }
         node.size = 1 + size(node.left) + size(node.right);
-        node.height =1 + Math.max(height(node.left),height(node.right));  // обновляем высоту
+        node.height = 1 + Math.max(height(node.left), height(node.right));  // обновляем высоту
         return node;
     }
-
 
 
     public K minKey() {
@@ -196,7 +201,7 @@ public class MyTreeMap<K extends Comparable<K>, V> {
 
         }
         node.size = 1 + size(node.left) + size(node.right);
-        node.height =1 + Math.max(height(node.left),height(node.right));  // обновляем высоту
+        node.height = 1 + Math.max(height(node.left), height(node.right));  // обновляем высоту
 
         return node;
     }
